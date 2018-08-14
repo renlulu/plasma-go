@@ -1,23 +1,25 @@
 package core
 
-import "plasma-go/util"
+import (
+	"github.com/renlulu/plasma-go/util"
+)
 
 type Transaction struct {
 	// first input
-	blkNum1 int32
-	txIndex1 int32
-	oIndex1 int32
+	blkNum1 uint64
+	txIndex1 uint64
+	oIndex1 uint64
 	sig1 []byte
 
 	// second input
-	blkNum2 int32
-	txIndex int32
-	oIndex2 int32
+	blkNum2 uint64
+	txIndex uint64
+	oIndex2 uint64
 	sig2 []byte
 
 	// output
 	newOwner1 util.Address
-	amount1 int32
+	amount1 uint64
 	newOwner2 util.Address
-	amount2 int32
+	amount2 uint64
 }
