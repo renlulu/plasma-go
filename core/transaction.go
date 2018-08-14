@@ -10,12 +10,14 @@ type Transaction struct {
 	txIndex1 uint64
 	oIndex1 uint64
 	sig1 []byte
+	spend1 bool
 
 	// second input
 	blkNum2 uint64
 	txIndex uint64
 	oIndex2 uint64
 	sig2 []byte
+	spend2 bool
 
 	// output
 	newOwner1 util.Address

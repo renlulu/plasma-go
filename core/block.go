@@ -2,6 +2,6 @@ package core
 
 type Block struct {
 	transactions []Transaction
-	number int32
+	number uint64
 	sig []byte
 }
