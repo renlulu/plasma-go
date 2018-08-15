@@ -1,14 +1,7 @@
 package core
 
-type Block struct {
-	transactions []*Transaction
-	number uint64
-	sig []byte
-}
-
-func GetGenesisBlock() Block {
-	return Block{
-		number:0,
-		sig: []byte("xiaohuo"),
-	}
+type 	Block struct {
+	Transactions []*Transaction 	`json:"transactions"`
+	Number       uint64				`json:"number"`
+	Sig          []byte				`json:"sig"`
 }

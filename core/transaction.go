@@ -6,18 +6,18 @@ import (
 
 type Transaction struct {
 	// first input
-	blkNum1 uint64
-	txIndex1 uint64
-	oIndex1 uint64
-	sig1 []byte
-	spend1 bool
+	BlkNum1  uint64 `json:"blkNum1"`
+	TxIndex1 uint64	`json:"txIndex1"`
+	OIndex1  uint64	`json:"oIndex1"`
+	Sig1     []byte	`json:"sig1"`
+	Spend1   bool
 
 	// second input
-	blkNum2  uint64
-	txIndex2 uint64
-	oIndex2  uint64
-	sig2     []byte
-	spend2   bool
+	BlkNum2  uint64 `json:"blkNum2"`
+	TxIndex2 uint64	`json:"txIndex2"`
+	OIndex2  uint64	`json:"oIndex2"`
+	Sig2     []byte	`json:"sig2"`
+	Spend2   bool
 
 	// output
 	newOwner1 util.Address
