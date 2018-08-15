@@ -6,12 +6,12 @@ import (
 )
 
 type Chain struct {
-	Blocks []*Block
-	BlockPool map[uint64][]*Block
-	NextDepositBlock uint64
-	NextChildBlock uint64
-	ChildBlockInterval uint64
-	BlockNum uint64
+	Blocks []*Block `json:"blocks"`
+	BlockPool map[uint64][]*Block `json:"block_pool"`
+	NextDepositBlock uint64 `json:"next_deposit_block"`
+	NextChildBlock uint64 `json:"next_child_block"`
+	ChildBlockInterval uint64 `json:"child_block_interval"`
+	BlockNum uint64 `json:"block_number"` //指向下一个区块的指针，也代表区块数量
 
 }
 
@@ -20,7 +20,7 @@ func MakeChain() *Chain {
 	c := Chain{
 		Blocks: make([]*Block,10),
 		BlockPool: make(map[uint64][]*Block,10),
-		NextDepositBlock: 1,
+		NextDepositBlock: 0,
 		ChildBlockInterval: 1000,
 		BlockNum: 0,
 	}
@@ -46,11 +46,8 @@ func (chain *Chain) AddBlock(block *Block) bool {
 		if isNextChildBlock {
 			chain.NextChildBlock = chain.NextChildBlock + 1
 			chain.NextDepositBlock = chain.NextDepositBlock + 1
-			chain.BlockNum = chain.BlockNum + 1
 		} else {
 			chain.NextDepositBlock = chain.NextDepositBlock + 1
-			chain.BlockNum = chain.BlockNum + 1
-
 		}
 
 	} else if block.Number > chain.NextDepositBlock {
@@ -58,7 +55,7 @@ func (chain *Chain) AddBlock(block *Block) bool {
 		fmt.Printf("or \n")
 		parentBlockNumber := block.Number - 1
 		if _,ok := chain.BlockPool[parentBlockNumber]; !ok {
-			chain.BlockPool[parentBlockNumber] = make([]*Block,1)
+			chain.BlockPool[parentBlockNumber] = make([]*Block,0)
 		}
 
 		chain.BlockPool[parentBlockNumber] = append(chain.BlockPool[parentBlockNumber],block)
@@ -134,5 +131,6 @@ func (chain *Chain) applyBlock(block *Block) {
 	}
 
 	chain.Blocks[chain.BlockNum] = block
+	chain.BlockNum = chain.BlockNum + 1
 }
 

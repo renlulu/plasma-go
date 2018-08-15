@@ -15,5 +15,6 @@ func main() {
 	http.HandleFunc("/submit_block",child_chain.SubmitBlockHandler)
 	http.HandleFunc("/block_number",child_chain.GetBlockNumberHandler)
 	http.HandleFunc("/get_block",child_chain.GetBlock)
+	http.HandleFunc("/get_child_chain",child_chain.GetChildChainHander)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", "8080"), nil))
 }

@@ -20,6 +20,12 @@ type BlockNum struct {
 	BlockNum uint64 `json:"block_number"`
 }
 
+func GetChildChainHander(w http.ResponseWriter, r *http.Request) {
+	c := childChain.Chain
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	json.NewEncoder(w).Encode(c)
+}
+
 func GetBlock(w http.ResponseWriter, r *http.Request) {
 	var blockNum BlockNum
 
