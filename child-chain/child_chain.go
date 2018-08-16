@@ -3,17 +3,19 @@ package child_chain
 import (
 	"github.com/renlulu/plasma-go/root-chain"
 	"github.com/renlulu/plasma-go/core"
+	"github.com/renlulu/plasma-go/util"
 )
 
 type ChildChain struct {
 	RootChain *root_chain.RootChain
 	Chain *core.Chain
 	CurrentBlock *core.Block
+	operator util.Address
 }
 
-func MakeChildChain(rootChain *root_chain.RootChain) ChildChain {
+func MakeChildChain(rootChain *root_chain.RootChain, operator util.Address) ChildChain {
 	childChain := ChildChain{
-		rootChain,core.MakeChain(),&core.Block{Number:0},
+		rootChain,core.MakeChain(),&core.Block{Number:0}, operator,
 	}
 	return childChain
 }
