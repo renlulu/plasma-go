@@ -7,13 +7,30 @@ import (
 	"io/ioutil"
 	"io"
 	"fmt"
+	"github.com/ethereum/go-ethereum/ethclient"
+	gcommon "github.com/go-ethereum/common"
+
+	"github.com/renlulu/plasma-go/root-chain/artifact"
 )
 
 
 var childChain ChildChain
+var rootChain *root_chain.RootChain
+var CoinAddr = gcommon.HexToAddress("0x84F70FEa5Ba54323C0EF85c58A47c98E1a2fe2Db")
+
+
 
 func init() {
-	childChain = MakeChildChain(nil)
+	childChain = MakeChildChain(nil,nil)
+	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
+	if err != nil {
+		panic(err)
+	}
+	rootChain,err = root_chain.NewRootChain(CoinAddr,conn)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 type BlockNum struct {
