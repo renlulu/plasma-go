@@ -8,15 +8,15 @@ import (
 	"io"
 	"fmt"
 	"github.com/ethereum/go-ethereum/ethclient"
-	gcommon "github.com/go-ethereum/common"
 
 	"github.com/renlulu/plasma-go/root-chain/artifact"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 
 var childChain ChildChain
 var rootChain *root_chain.RootChain
-var CoinAddr = gcommon.HexToAddress("0x84F70FEa5Ba54323C0EF85c58A47c98E1a2fe2Db")
+var CoinAddr = common.HexToAddress("0x84F70FEa5Ba54323C0EF85c58A47c98E1a2fe2Db")
 
 
 

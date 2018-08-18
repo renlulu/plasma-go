@@ -1,9 +1,9 @@
 package child_chain
 
 import (
-	"github.com/renlulu/plasma-go/root-chain"
 	"github.com/renlulu/plasma-go/core"
 	"github.com/renlulu/plasma-go/util"
+	"github.com/renlulu/plasma-go/root-chain/artifact"
 )
 
 type ChildChain struct {
