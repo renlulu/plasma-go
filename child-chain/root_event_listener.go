@@ -15,6 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"strings"
 	artifact "../root-chain/artifact"
+	"github.com/renlulu/plasma-go/core"
 )
 
 const (
@@ -26,9 +27,10 @@ type RootChainListener struct {
 	rpcClient *rpc.Client
 	ethClient *ethclient.Client
 	RootChain root_chain.RootChain
+	chain core.Chain
 }
 
-func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl string) RootChainListener {
+func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl string,chain core.Chain) RootChainListener {
 	client, err := rpc.Dial(url)
 	if err != nil {
 		log.Fatalf("could not create ipc client: %v", err)
@@ -45,6 +47,7 @@ func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl st
 		rpcClient: client,
 		RootChain: rootChain,
 		ethClient: ethClient,
+		chain:chain,
 	}
 }
 
@@ -62,7 +65,7 @@ func (listener *RootChainListener) DepositListener(contract string) {
 	contractAddress := common.HexToAddress(contract)
 	var i = big.Int{}
 
-	// 监听只被确认的块的事件
+	// 6 blocks ensure confirmation
 	from := i.SetInt64(latestBlock.GetNumber() - (Confirmations*2 + 1))
 	to := i.SetInt64(latestBlock.GetNumber() + 1 - Confirmations)
 
@@ -94,11 +97,14 @@ func (listener *RootChainListener) DepositListener(contract string) {
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			//TODO
-
-
-
+			//add to depositor block to child block
+			owner := event.Depositor
+			amount := event.Amount
+			depositTx := core.MakeTransaction(owner,amount.Uint64())
+			txs := make([]*core.Transaction,0)
+			txs = append(txs, depositTx)
+			block := core.MakeBlock(txs,event.DepositBlock.Uint64())
+			listener.chain.AddBlock(&block)
 		}
 	}
 }

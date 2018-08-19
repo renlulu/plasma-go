@@ -26,6 +26,12 @@ type Transaction struct {
 	amount2 uint64
 }
 
+func MakeTransaction(address util.Address,amount uint64) *Transaction {
+	return &Transaction{
+		newOwner1:address,amount1:amount,
+	}
+}
+
 type UTXO struct {
 	blkNum uint64
 	txIndex uint64
