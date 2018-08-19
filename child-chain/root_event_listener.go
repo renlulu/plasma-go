@@ -16,6 +16,7 @@ import (
 	"strings"
 	artifact "../root-chain/artifact"
 	"github.com/renlulu/plasma-go/core"
+	"encoding/json"
 )
 
 const (
@@ -23,14 +24,15 @@ const (
 )
 
 type RootChainListener struct {
-	url       string
-	rpcClient *rpc.Client
-	ethClient *ethclient.Client
-	RootChain root_chain.RootChain
-	chain core.Chain
+	url          string
+	rpcClient    *rpc.Client
+	ethClient    *ethclient.Client
+	RootChain    root_chain.RootChain
+	chain        core.Chain
+	handledEvent map[string]interface{}
 }
 
-func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl string,chain core.Chain) RootChainListener {
+func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
 	client, err := rpc.Dial(url)
 	if err != nil {
 		log.Fatalf("could not create ipc client: %v", err)
@@ -43,11 +45,12 @@ func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl st
 	}
 
 	return RootChainListener{
-		url:       url,
-		rpcClient: client,
-		RootChain: rootChain,
-		ethClient: ethClient,
-		chain:chain,
+		url:          url,
+		rpcClient:    client,
+		RootChain:    rootChain,
+		ethClient:    ethClient,
+		chain:        chain,
+		handledEvent: make(map[string]interface{}, 0),
 	}
 }
 
@@ -60,7 +63,7 @@ func (listener *RootChainListener) GetLatestBlock() geth.Block {
 	return latestBlock
 }
 
-func (listener *RootChainListener) DepositListener(contract string) {
+func (listener *RootChainListener) EventListener(contract string) {
 	latestBlock := listener.GetLatestBlock()
 	contractAddress := common.HexToAddress(contract)
 	var i = big.Int{}
@@ -92,19 +95,42 @@ func (listener *RootChainListener) DepositListener(contract string) {
 				log.Fatal(err)
 			}
 
-			event := root_chain.RootChainDeposit{}
-			err = contractAbi.Unpack(&event, "RootChainDeposit", vLog.Data)
+			depositEvent := root_chain.RootChainDeposit{}
+			exitStartedEvent := root_chain.RootChainExitStarted{}
+			err = contractAbi.Unpack(&depositEvent, "RootChainDeposit", vLog.Data)
 			if err != nil {
 				log.Fatal(err)
+				err = contractAbi.Unpack(&exitStartedEvent, "RootChainExitStarted", vLog.Data)
+				if err != nil {
+					log.Fatal(err)
+				} else {
+					utxoId := exitStartedEvent.UtxoPos
+					listener.chain.MarkUTXOSpend(utxoId.Uint64())
+					b, e := json.Marshal(exitStartedEvent)
+					if e != nil {
+						fmt.Printf("Error: %s", err)
+						return
+					}
+					listener.handledEvent[string(b)] = exitStartedEvent
+				}
+			} else {
+				//add to depositor block to child block
+				owner := depositEvent.Depositor
+				amount := depositEvent.Amount
+				depositTx := core.MakeTransaction(owner, amount.Uint64())
+				txs := make([]*core.Transaction, 0)
+				txs = append(txs, depositTx)
+				block := core.MakeBlock(txs, depositEvent.DepositBlock.Uint64())
+				listener.chain.AddBlock(&block)
+				b,e := json.Marshal(depositEvent)
+				if e != nil {
+					fmt.Printf("Error: %s", err)
+					return
+				}
+
+				listener.handledEvent[string(b)] = depositEvent
 			}
-			//add to depositor block to child block
-			owner := event.Depositor
-			amount := event.Amount
-			depositTx := core.MakeTransaction(owner,amount.Uint64())
-			txs := make([]*core.Transaction,0)
-			txs = append(txs, depositTx)
-			block := core.MakeBlock(txs,event.DepositBlock.Uint64())
-			listener.chain.AddBlock(&block)
+
 		}
 	}
 }
