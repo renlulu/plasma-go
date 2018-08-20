@@ -14,7 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"strings"
-	artifact "../root-chain/artifact"
+	artifact "github.com/renlulu/plasma-go/root-chain/artifact"
 	"github.com/renlulu/plasma-go/core"
 	"encoding/json"
 )
