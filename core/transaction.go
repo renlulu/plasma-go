@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/renlulu/plasma-go/util"
+	"github.com/go-ethereum/common"
 )
 
 type Transaction struct {
@@ -20,13 +20,13 @@ type Transaction struct {
 	Spend2   bool
 
 	// output
-	newOwner1 util.Address
+	newOwner1 common.Address
 	amount1 uint64
-	newOwner2 util.Address
+	newOwner2 common.Address
 	amount2 uint64
 }
 
-func MakeTransaction(address util.Address,amount uint64) *Transaction {
+func MakeTransaction(address common.Address,amount uint64) *Transaction {
 	return &Transaction{
 		newOwner1:address,amount1:amount,
 	}

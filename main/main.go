@@ -7,9 +7,6 @@ import (
 	"log"
 )
 
-
-
-
 func main() {
 	http.HandleFunc("/get_current_block",child_chain.GetCurrentBlockHandler)
 	http.HandleFunc("/submit_block",child_chain.SubmitBlockHandler)

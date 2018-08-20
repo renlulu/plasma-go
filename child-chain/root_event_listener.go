@@ -87,8 +87,10 @@ func (listener *RootChainListener) EventListener(contract string) {
 
 	for {
 		select {
+
 		case err := <-sub.Err():
 			log.Fatal(err)
+
 		case vLog := <-logs:
 			contractAbi, err := abi.JSON(strings.NewReader(string(artifact.RootChainABI)))
 			if err != nil {
