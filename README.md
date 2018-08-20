@@ -70,11 +70,25 @@ geth --identity "TestNode" --rpc --rpcport "8545" --datadir private-network --po
 truffle compile
 ```
 
+#### unlock account
+
+```
+personal.unlockAccount("0x70043fa2d7b7125b8f6351b4b6b96c748f8a8336")
+```
+
 #### migrate
 
 ```
 truffle migrate --reset
 ```
+
+#### mining
+
+```
+miner.start()
+```
+
+
 
 
 ### More needs to be added
