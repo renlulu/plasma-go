@@ -9,7 +9,7 @@ import (
 )
 
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0xd917193e219ee3ced952c7fd4caae0b4a1b56567")
+var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54")
 var connecter *Connecter
 
 type Connecter struct {
