@@ -283,6 +283,14 @@ contract RootChain {
      * Public view functions
      */
 
+    function hello()
+    public
+    view
+    returns (uint256)
+    {
+        return 1000;
+    }
+
     /**
      * @dev Queries the child chain.
      * @param _blockNumber Number of the block to return.
@@ -295,6 +303,7 @@ contract RootChain {
     {
         return (childChain[_blockNumber].root, childChain[_blockNumber].timestamp);
     }
+
 
     /**
      * @dev Determines the next deposit block number.

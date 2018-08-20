@@ -26,3 +26,9 @@
 14:22:12.924745 version@stat F·[2] S·30KiB[30KiB] Sc·[0.50]
 14:22:12.926258 db@janitor F·4 G·0
 14:22:12.926316 db@open done T·11.529506ms
+18:32:12.293371 table@compaction L0·2 -> L1·0 S·30KiB Q·1103
+18:32:12.295885 table@build created L1@8 N·416 S·23KiB "Dat..ion,v11":"\x9e\x1dC..}\xe3\xc5,v618"
+18:32:12.295932 version@stat F·[0 1] S·23KiB[0B 23KiB] Sc·[0.00 0.00]
+18:32:12.296145 table@compaction committed F-1 S-6KiB Ke·0 D·201 T·1.665915ms
+18:32:12.296880 table@remove removed @5
+18:32:12.297298 table@remove removed @2
