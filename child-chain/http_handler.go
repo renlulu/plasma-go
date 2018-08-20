@@ -21,7 +21,7 @@ var CoinAddr = common.HexToAddress("0x84F70FEa5Ba54323C0EF85c58A47c98E1a2fe2Db")
 
 
 func init() {
-	childChain = MakeChildChain(nil,nil)
+	childChain = MakeChildChain(nil,"")
 	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
 	if err != nil {
 		panic(err)
