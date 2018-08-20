@@ -9,7 +9,7 @@ import (
 )
 
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0x4cd7519f5c19e114a949eb0caa4c718289571519")
+var RootAddress= common.HexToAddress("0xd917193e219ee3ced952c7fd4caae0b4a1b56567")
 var connecter *Connecter
 
 type Connecter struct {
@@ -19,7 +19,7 @@ type Connecter struct {
 }
 
 func init() {
-	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
+	conn, err := ethclient.Dial("ws://localhost:8546")
 	if err != nil {
 		panic(err)
 	}
