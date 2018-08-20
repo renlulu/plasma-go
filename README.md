@@ -88,7 +88,20 @@ truffle migrate --reset
 miner.start()
 ```
 
+### Use abigen generate go file
 
+#### install abigen
+
+```
+cd $GOPATH/src/github.com/ethereum/go-ethereum
+godep go install ./cmd/abigen
+```
+
+#### generate file
+
+```
+abigen --abi chain.abi --pkg chain --type RootChain --out root_chain_abi.go --bin chain.bin
+```
 
 
 ### More needs to be added

@@ -27,12 +27,12 @@ type RootChainListener struct {
 	url          string
 	rpcClient    *rpc.Client
 	ethClient    *ethclient.Client
-	RootChain    root_chain.RootChain
+	RootChain    chain.RootChain
 	chain        core.Chain
 	handledEvent map[string]interface{}
 }
 
-func MakeRootChainListener(url string, rootChain root_chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
+func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
 	client, err := rpc.Dial(url)
 	if err != nil {
 		log.Fatalf("could not create ipc client: %v", err)
@@ -97,8 +97,8 @@ func (listener *RootChainListener) EventListener(contract string) {
 				log.Fatal(err)
 			}
 
-			depositEvent := root_chain.RootChainDeposit{}
-			exitStartedEvent := root_chain.RootChainExitStarted{}
+			depositEvent := chain.RootChainDeposit{}
+			exitStartedEvent := chain.RootChainExitStarted{}
 			err = contractAbi.Unpack(&depositEvent, "RootChainDeposit", vLog.Data)
 			if err != nil {
 				log.Fatal(err)

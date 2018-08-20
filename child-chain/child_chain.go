@@ -6,13 +6,13 @@ import (
 )
 
 type ChildChain struct {
-	RootChain *root_chain.RootChain
+	RootChain *chain.RootChain
 	Chain *core.Chain
 	CurrentBlock *core.Block
 	operator string
 }
 
-func MakeChildChain(rootChain *root_chain.RootChain, operator string) ChildChain {
+func MakeChildChain(rootChain *chain.RootChain, operator string) ChildChain {
 	childChain := ChildChain{
 		rootChain,core.MakeChain(),&core.Block{Number:0}, operator,
 	}

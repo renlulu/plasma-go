@@ -15,7 +15,7 @@ import (
 
 
 var childChain ChildChain
-var rootChain *root_chain.RootChain
+var rootChain *chain.RootChain
 var CoinAddr = common.HexToAddress("0x84F70FEa5Ba54323C0EF85c58A47c98E1a2fe2Db")
 
 
@@ -26,7 +26,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	rootChain,err = root_chain.NewRootChain(CoinAddr,conn)
+	rootChain,err = chain.NewRootChain(CoinAddr,conn)
 	if err != nil {
 		panic(err)
 	}
