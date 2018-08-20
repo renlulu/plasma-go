@@ -1,18 +1,28 @@
 =============== Aug 20, 2018 (CST) ===============
-12:23:13.609898 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-12:23:13.610575 db@open opening
-12:23:13.611575 version@stat F·[] S·0B[] Sc·[]
-12:23:13.611827 db@janitor F·2 G·0
-12:23:13.611864 db@open done T·1.26737ms
+14:17:26.786884 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:17:26.787495 db@open opening
+14:17:26.788000 version@stat F·[] S·0B[] Sc·[]
+14:17:26.788310 db@janitor F·2 G·0
+14:17:26.788342 db@open done T·830.812µs
 =============== Aug 20, 2018 (CST) ===============
-12:23:51.044909 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-12:23:51.045165 version@stat F·[] S·0B[] Sc·[]
-12:23:51.045194 db@open opening
-12:23:51.045262 journal@recovery F·1
-12:23:51.049108 journal@recovery recovering @1
-12:23:51.050024 memdb@flush created L0@2 N·9 S·564B "H\xa0\xe5..\xa5\xe8.,v3":"r\x00\x00..\xa5\xe8.,v5"
-12:23:51.054319 version@stat F·[1] S·564B[564B] Sc·[0.25]
-12:23:51.055677 db@janitor F·3 G·0
-12:23:51.055727 db@open done T·10.515134ms
-12:25:52.647616 db@close closing
-12:25:52.647754 db@close done T·135.623µs
+14:18:19.200514 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:18:19.200746 version@stat F·[] S·0B[] Sc·[]
+14:18:19.200774 db@open opening
+14:18:19.200840 journal@recovery F·1
+14:18:19.204736 journal@recovery recovering @1
+14:18:19.205456 memdb@flush created L0@2 N·9 S·546B "H^\x1f..א\xe0,v3":"r\x00\x00..א\xe0,v5"
+14:18:19.209546 version@stat F·[1] S·546B[546B] Sc·[0.25]
+14:18:19.211506 db@janitor F·3 G·0
+14:18:19.211545 db@open done T·10.757519ms
+14:21:57.577302 db@close closing
+14:21:57.577590 db@close done T·286.972µs
+=============== Aug 20, 2018 (CST) ===============
+14:22:12.914257 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:22:12.914716 version@stat F·[1] S·546B[546B] Sc·[0.25]
+14:22:12.914748 db@open opening
+14:22:12.914823 journal@recovery F·1
+14:22:12.918658 journal@recovery recovering @3
+14:22:12.920882 memdb@flush created L0@5 N·608 S·29KiB "Dat..ion,v11":"\x9e\x1dC..}\xe3\xc5,v618"
+14:22:12.924745 version@stat F·[2] S·30KiB[30KiB] Sc·[0.50]
+14:22:12.926258 db@janitor F·4 G·0
+14:22:12.926316 db@open done T·11.529506ms
