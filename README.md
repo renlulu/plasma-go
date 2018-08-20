@@ -15,7 +15,7 @@
 
 ### Create your own private ethereum test network
 
-# setup genesis.json
+#### setup genesis.json
 
 ```
 {
@@ -38,25 +38,25 @@
 }
 ```
 
-# create genesis block
+#### create genesis block
 
 ```
 geth --datadir "./" init genesis.json
 ```
 
-# crete private network
+#### crete private network
 
 ```
 geth --datadir "./" --nodiscover console 2>>geth.log
 ```
 
-# create account
+#### create account
 
 ```
 personal.newAccount("password")
 ```
 
-# run with rpc and ws
+#### run with rpc and ws
 
 ```
 geth --identity "TestNode" --rpc --rpcport "8545" --datadir data0 --port "30303"  --rpccorsdomain "*" --rpcaddr "0.0.0.0" --networkid 15  --ws --wsport 8546
