@@ -3,7 +3,7 @@ package child_chain
 import (
 	"net/http"
 	"encoding/json"
-	"github.com/renlulu/plasma-go/core"
+	"github.com/renlulu/plasma-go/child-chain/core"
 	"io/ioutil"
 	"io"
 	"fmt"
@@ -21,6 +21,7 @@ var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54
 
 
 func init() {
+
 	childChain = MakeChildChain(nil,"")
 	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
 	if err != nil {

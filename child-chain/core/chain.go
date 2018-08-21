@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/renlulu/plasma-go/util"
+	"github.com/renlulu/plasma-go/child-chain/util"
 	"fmt"
 )
 

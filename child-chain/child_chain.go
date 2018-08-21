@@ -1,7 +1,7 @@
 package child_chain
 
 import (
-	"github.com/renlulu/plasma-go/core"
+	"github.com/renlulu/plasma-go/child-chain/core"
 	"github.com/renlulu/plasma-go/root-chain/artifact"
 )
 
