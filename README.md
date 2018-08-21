@@ -62,7 +62,7 @@ personal.newAccount("password")
 geth --identity "TestNode" --rpc --rpcport "8545" --datadir private-network --port "30303"  --rpccorsdomain "*" --rpcaddr "0.0.0.0" --networkid 10  --ws --wsport 8546 console
 ```
 
-### Deploy contract with truffle
+### Deploy root contract with truffle
 
 #### compile
 
