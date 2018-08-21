@@ -12,7 +12,6 @@ type Chain struct {
 	NextChildBlock uint64 `json:"next_child_block"`
 	ChildBlockInterval uint64 `json:"child_block_interval"`
 	BlockNum uint64 `json:"block_number"` //指向下一个区块的指针，也代表区块数量
-
 }
 
 
