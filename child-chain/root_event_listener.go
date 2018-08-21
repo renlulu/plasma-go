@@ -10,13 +10,14 @@ import (
 	"math/big"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"context"
-	"github.com/ethereum/go-ethereum/mobile"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"strings"
 	artifact "github.com/renlulu/plasma-go/root-chain/artifact"
 	"github.com/renlulu/plasma-go/child-chain/core"
 	"encoding/json"
+	"github.com/renlulu/plasma-go/child-chain/util"
+	"strconv"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 const (
@@ -54,23 +55,26 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 	}
 }
 
-func (listener *RootChainListener) GetLatestBlock() geth.Block {
-	var latestBlock geth.Block
-	err := listener.rpcClient.Call(&latestBlock, "eth_getBlockByNumber", "latest", true)
+func (listener *RootChainListener) GetLatestBlock() int64 {
+	number := util.GetLatestBlock(listener.url).Result.Number
+	fmt.Printf("get latest block number %s\n",number)
+	latestNumber, err := strconv.ParseInt(number, 16, 64)
 	if err != nil {
-		fmt.Println("can't get latest block:", err)
+		fmt.Printf("convert error\n")
 	}
-	return latestBlock
+
+	return latestNumber
 }
 
 func (listener *RootChainListener) EventListener(contract string) {
 	latestBlock := listener.GetLatestBlock()
+	fmt.Printf("event listener,latest block is %d",latestBlock)
 	contractAddress := common.HexToAddress(contract)
 	var i = big.Int{}
 
 	// 6 blocks ensure confirmation
-	from := i.SetInt64(latestBlock.GetNumber() - (Confirmations*2 + 1))
-	to := i.SetInt64(latestBlock.GetNumber() + 1 - Confirmations)
+	from := i.SetInt64(latestBlock - (Confirmations*2 + 1))
+	to := i.SetInt64(latestBlock + 1 - Confirmations)
 
 	q := ethereum.FilterQuery{
 		FromBlock: from,

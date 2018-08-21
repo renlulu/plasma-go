@@ -7,7 +7,15 @@ import (
 	"fmt"
 	"flag"
 	"github.com/renlulu/plasma-go/cli"
+	"github.com/renlulu/plasma-go/root-chain/artifact"
+	"github.com/ethereum/go-ethereum/common"
 )
+
+
+var childChain child_chain.ChildChain
+var rootChain *chain.RootChain
+var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54")
+
 
 func main() {
 	var startServer bool
@@ -39,6 +47,6 @@ func httpServer() {
 	http.HandleFunc("/get_block", child_chain.GetBlock)
 	http.HandleFunc("/get_child_chain", child_chain.GetChildChainHander)
 
-	fmt.Printf("start http server on %s", "8080")
+	fmt.Printf("start http server on %s\n", "8080")
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", "8080"), nil))
 }

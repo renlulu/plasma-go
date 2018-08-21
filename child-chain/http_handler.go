@@ -22,15 +22,20 @@ var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54
 
 func init() {
 
+	fmt.Printf("Init child chain...\n")
 	childChain = MakeChildChain(nil,"")
 	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Init root chain...\n")
 	rootChain,err = chain.NewRootChain(RootAddress,conn)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Start to listen events from root chain...\n")
+	listener := MakeRootChainListener("http://127.0.0.1:8545",*rootChain,"ws://127.0.0.1:8546",*childChain.Chain)
+	listener.EventListener("0x6688b124492d9c924cf849e57f8228111a3f1e54")
 
 }
 
