@@ -12,6 +12,8 @@ Use Plasma CLI to interact with child chain and root chain
 
 #### get_deposit_block
 
+get current deposit block from root chain
+
 ```
 ./main -run get_deposit_block
 ```
