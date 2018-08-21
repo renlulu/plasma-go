@@ -139,3 +139,37 @@
 20:04:52.077543 table@compaction committed F-1 S-36KiB Ke·0 D·1243 T·26.448659ms
 20:04:52.077756 table@remove removed @30
 20:04:52.078114 table@remove removed @29
+=============== Aug 21, 2018 (CST) ===============
+11:24:29.214262 memdb@flush N·28690 S·3MiB
+11:24:29.241965 memdb@flush created L0@35 N·28690 S·665KiB "n:\x00..ail,v112344":"n:\xff..ver,d120060"
+11:24:29.242122 version@stat F·[1 1] S·1MiB[665KiB 1MiB] Sc·[0.25 0.01]
+11:24:29.242480 memdb@flush committed F·1 T·28.118637ms
+11:24:29.243474 journal@remove removed @31
+11:25:12.520677 table@compaction L0·1 -> L1·1 S·1MiB Q·130859
+11:25:12.555455 table@build created L1@36 N·22774 S·1MiB "n:\x00..ail,v112344":"version,v1"
+11:25:12.555535 version@stat F·[0 1] S·1MiB[0B 1MiB] Sc·[0.00 0.01]
+11:25:12.555742 table@compaction committed F-1 S-458KiB Ke·0 D·25364 T·34.990642ms
+11:25:12.555994 table@remove removed @35
+11:25:12.556353 table@remove removed @33
+12:40:29.058661 memdb@flush N·28077 S·3MiB
+12:40:29.083567 memdb@flush created L0@38 N·28077 S·606KiB "n:\x00..ing,v135396":"n:\xff..ong,v153176"
+12:40:29.083627 version@stat F·[1 1] S·1MiB[606KiB 1MiB] Sc·[0.25 0.01]
+12:40:29.084416 memdb@flush committed F·1 T·25.684919ms
+12:40:29.087230 journal@remove removed @34
+12:41:19.785709 table@compaction L0·1 -> L1·1 S·1MiB Q·158967
+12:41:19.825536 table@build created L1@39 N·25451 S·1MiB "n:\x00..ing,v135396":"version,v1"
+12:41:19.825599 version@stat F·[0 1] S·1MiB[0B 1MiB] Sc·[0.00 0.01]
+12:41:19.825774 table@compaction committed F-1 S-434KiB Ke·0 D·25400 T·39.987755ms
+12:41:19.826021 table@remove removed @38
+12:41:19.826396 table@remove removed @36
+16:08:35.658480 memdb@flush N·28259 S·3MiB
+16:08:35.683136 memdb@flush created L0@41 N·28259 S·611KiB "n:\x00..ail,v172848":"n:\xff..ail,v170178"
+16:08:35.683197 version@stat F·[1 1] S·2MiB[611KiB 1MiB] Sc·[0.25 0.01]
+16:08:35.686217 memdb@flush committed F·1 T·27.667086ms
+16:08:35.688488 journal@remove removed @37
+16:09:35.770946 table@compaction L0·1 -> L1·1 S·2MiB Q·187439
+16:09:35.814508 table@build created L1@42 N·27478 S·1MiB "n:\x00..ing,v135396":"version,v1"
+16:09:35.814568 version@stat F·[0 1] S·1MiB[0B 1MiB] Sc·[0.00 0.02]
+16:09:35.814720 table@compaction committed F-1 S-477KiB Ke·0 D·26232 T·43.661043ms
+16:09:35.814951 table@remove removed @41
+16:09:35.816723 table@remove removed @39

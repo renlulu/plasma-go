@@ -35,7 +35,7 @@ func init() {
 	}
 }
 
-func GetDepositBlock() uint64{
+func GetDepositBlock() uint64 {
 	opts := &bind.CallOpts{
 		Pending:false,
 		From: RootAddress,

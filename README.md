@@ -1,5 +1,21 @@
 ## Plasma implement in go
 
+### CLI Documentation
+
+Use Plasma CLI to interact with child chain and root chain
+
+#### help
+
+```
+./main -help
+```
+
+#### get_deposit_block
+
+```
+./main -run get_deposit_block
+```
+
 ###  Related items
 
 - https://ethresear.ch/t/minimal-viable-plasma/426
