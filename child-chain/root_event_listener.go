@@ -56,9 +56,11 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 }
 
 func (listener *RootChainListener) GetLatestBlock() int64 {
-	number := util.GetLatestBlock(listener.url).Result.Number
-	fmt.Printf("get latest block number %s\n",number)
-	latestNumber, err := strconv.ParseInt(number, 16, 64)
+	number := util.GetLatestBlock(listener.url).Result
+
+	s := strings.Split(number,"x")
+	_,number = s[0], s[1]
+	latestNumber, err := strconv.ParseInt(number ,16, 64)
 	if err != nil {
 		fmt.Printf("convert error\n")
 	}

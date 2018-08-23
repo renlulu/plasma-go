@@ -54,14 +54,14 @@ type BlockRequest struct {
 	Id      byte          `json:"id"`
 }
 
-type BlockResponse struct {
+type BlockNumberResponse struct {
 	JsonRpc string        `json:"jsonrpc"`
 	Id      byte          `json:"id"`
-	Result  Block `json:"result"`
+	Result  string 		  `json:"result"`
 }
 
-func GetLatestBlock(url string) BlockResponse {
-	var block BlockResponse
+func GetLatestBlock(url string) BlockNumberResponse {
+	var block BlockNumberResponse
 	p := []interface{}{}
 	request := BlockRequest{JsonRpc: "2.0", Method: "eth_blockNumber", Params: p, Id: 1}
 	data, err := json.Marshal(request)
@@ -89,9 +89,11 @@ func GetLatestBlock(url string) BlockResponse {
 		return block
 	}
 
-	fmt.Println(string(content))
+	fmt.Println("result is ",string(content))
 
 	json.Unmarshal(content, &block)
+
+	fmt.Println("block number is ",block.Result)
 
 	return block
 }
