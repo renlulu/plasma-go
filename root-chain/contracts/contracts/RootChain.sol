@@ -125,6 +125,15 @@ contract RootChain {
         emit BlockSubmitted(_root, block.timestamp);
     }
 
+
+    function()
+    public
+    payable
+    {
+        deposit();
+    }
+
+
     /**
      * @dev Allows anyone to deposit funds into the Plasma chain.
      */
