@@ -1,4 +1,4 @@
-[
+ [
     {
       "constant": true,
       "inputs": [
@@ -153,12 +153,12 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
+          "indexed": false,
           "name": "depositor",
           "type": "address"
         },
         {
-          "indexed": true,
+          "indexed": false,
           "name": "depositBlock",
           "type": "uint256"
         },
