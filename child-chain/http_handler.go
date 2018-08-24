@@ -16,7 +16,7 @@ import (
 
 var childChain ChildChain
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
+var RootAddress= common.HexToAddress("0xa80caedc9ffa91f09e7f9f76ec96660edf8e34ef")
 
 
 
@@ -35,7 +35,7 @@ func init() {
 	}
 	fmt.Printf("Start to listen events from root chain...\n")
 	listener := MakeRootChainListener("http://127.0.0.1:8545",*rootChain,"ws://127.0.0.1:8546",*childChain.Chain)
-	listener.EventListener("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
+	go listener.EventLoop("0xa80caedc9ffa91f09e7f9f76ec96660edf8e34ef")
 
 }
 

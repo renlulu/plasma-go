@@ -19,7 +19,7 @@ func MakeChain() *Chain {
 	c := Chain{
 		Blocks: make([]*Block,10),
 		BlockPool: make(map[uint64][]*Block,10),
-		NextDepositBlock: 0,
+		NextDepositBlock: 1,
 		ChildBlockInterval: 1000,
 		BlockNum: 0,
 	}
@@ -29,6 +29,7 @@ func MakeChain() *Chain {
 }
 
 func (chain *Chain) AddBlock(block *Block) bool {
+	fmt.Println("block number is ",block.Number)
 	isNextChildBlock := block.Number == chain.NextChildBlock
 	isNextDepositBlock := block.Number == chain.NextDepositBlock
 

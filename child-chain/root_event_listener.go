@@ -17,6 +17,8 @@ import (
 	"strconv"
 	"encoding/json"
 	"github.com/ethereum/go-ethereum/core/types"
+	"time"
+	"math/big"
 )
 
 const (
@@ -30,7 +32,6 @@ type RootChainListener struct {
 	RootChain    chain.RootChain
 	chain        core.Chain
 	handledEvent map[string]interface{}
-	fromBlock    uint64
 }
 
 func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
@@ -52,7 +53,6 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 		ethClient:    ethClient,
 		chain:        chain,
 		handledEvent: make(map[string]interface{}, 0),
-		fromBlock:    0,
 	}
 }
 
@@ -69,6 +69,15 @@ func (listener *RootChainListener) GetLatestBlock() int64 {
 	return latestNumber
 }
 
+func (listener *RootChainListener) EventLoop(contract string) {
+	for {
+		fmt.Println("start event lintener...")
+		go listener.EventListener(contract)
+
+		time.Sleep(time.Second * 5)
+	}
+}
+
 func (listener *RootChainListener) EventListener(contract string) {
 
 	latestBlock := listener.GetLatestBlock()
@@ -80,8 +89,13 @@ func (listener *RootChainListener) EventListener(contract string) {
 	fmt.Println("contract address is ", contract)
 
 	q := ethereum.FilterQuery{
+		FromBlock: big.NewInt(latestBlock - 6),
 		Addresses: []common.Address{contractAddress},
+		ToBlock: big.NewInt(latestBlock),
+
 	}
+
+	fmt.Printf("query is %+v\n",q)
 
 
 	logs, err := listener.ethClient.FilterLogs(context.Background(), q)
@@ -120,12 +134,12 @@ func (listener *RootChainListener) EventListener(contract string) {
 			}
 		} else {
 			//add to depositor block to child block
+			fmt.Printf("deposit block %+v\n",depositEvent)
 			owner := depositEvent.Depositor
 			amount := depositEvent.Amount
 			depositTx := core.MakeTransaction(owner, amount.Uint64())
 			txs := make([]*core.Transaction, 0)
 			txs = append(txs, depositTx)
-			fmt.Printf("deposit block %+v\n",depositEvent)
 			block := core.MakeBlock(txs, depositEvent.DepositBlock.Uint64())
 			listener.chain.AddBlock(&block)
 			b, e := json.Marshal(depositEvent)
@@ -211,15 +225,15 @@ func (listener *RootChainListener) eventListener(contract string) {
 				depositTx := core.MakeTransaction(owner, amount.Uint64())
 				txs := make([]*core.Transaction, 0)
 				txs = append(txs, depositTx)
-				block := core.MakeBlock(txs, depositEvent.DepositBlock.Uint64())
-				listener.chain.AddBlock(&block)
-				b, e := json.Marshal(depositEvent)
-				if e != nil {
-					fmt.Printf("Error: %s", err)
-					return
-				}
-
-				listener.handledEvent[string(b)] = depositEvent
+				//block := core.MakeBlock(txs, depositEvent.DepositBlock)
+				//listener.chain.AddBlock(&block)
+				//b, e := json.Marshal(depositEvent)
+				//if e != nil {
+				//	fmt.Printf("Error: %s", err)
+				//	return
+				//}
+				//
+				//listener.handledEvent[string(b)] = depositEvent
 			}
 
 		}

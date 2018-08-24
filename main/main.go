@@ -14,7 +14,7 @@ import (
 
 var childChain child_chain.ChildChain
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54")
+var RootAddress= common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
 
 
 func main() {
