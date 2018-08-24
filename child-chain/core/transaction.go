@@ -20,15 +20,15 @@ type Transaction struct {
 	Spend2   bool
 
 	// output
-	newOwner1 common.Address
-	amount1 uint64
-	newOwner2 common.Address
-	amount2 uint64
+	NewOwner1 common.Address `json:"newOwner1"`
+	Amount1   uint64 `json:"amount1"`
+	NewOwner2 common.Address `json:"newOwner2"`
+	Amount2   uint64 `json:"amount2"`
 }
 
 func MakeTransaction(address common.Address,amount uint64) *Transaction {
 	return &Transaction{
-		newOwner1:address,amount1:amount,
+		NewOwner1: address, Amount1: amount,
 	}
 }
 
