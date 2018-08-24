@@ -7,16 +7,15 @@ import (
 	"github.com/renlulu/plasma-go/root-chain/artifact"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum"
-	"math/big"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"context"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"strings"
 	artifact "github.com/renlulu/plasma-go/root-chain/artifact"
 	"github.com/renlulu/plasma-go/child-chain/core"
-	"encoding/json"
 	"github.com/renlulu/plasma-go/child-chain/util"
 	"strconv"
+	"encoding/json"
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
@@ -31,6 +30,7 @@ type RootChainListener struct {
 	RootChain    chain.RootChain
 	chain        core.Chain
 	handledEvent map[string]interface{}
+	fromBlock    uint64
 }
 
 func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
@@ -52,15 +52,16 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 		ethClient:    ethClient,
 		chain:        chain,
 		handledEvent: make(map[string]interface{}, 0),
+		fromBlock:    0,
 	}
 }
 
 func (listener *RootChainListener) GetLatestBlock() int64 {
 	number := util.GetLatestBlock(listener.url).Result
 
-	s := strings.Split(number,"x")
-	_,number = s[0], s[1]
-	latestNumber, err := strconv.ParseInt(number ,16, 64)
+	s := strings.Split(number, "x")
+	_, number = s[0], s[1]
+	latestNumber, err := strconv.ParseInt(number, 16, 64)
 	if err != nil {
 		fmt.Printf("convert error\n")
 	}
@@ -69,35 +70,117 @@ func (listener *RootChainListener) GetLatestBlock() int64 {
 }
 
 func (listener *RootChainListener) EventListener(contract string) {
-	latestBlock := listener.GetLatestBlock()
-	fmt.Printf("event listener,latest block is %d",latestBlock)
-	contractAddress := common.HexToAddress(contract)
-	var i = big.Int{}
 
-	// 6 blocks ensure confirmation
-	from := i.SetInt64(latestBlock - (Confirmations*2 + 1))
-	to := i.SetInt64(latestBlock + 1 - Confirmations)
+	latestBlock := listener.GetLatestBlock()
+
+	fmt.Println("start event listener, latest block is ", latestBlock)
+
+	contractAddress := common.HexToAddress(contract)
+
+	fmt.Println("contract address is ", contract)
 
 	q := ethereum.FilterQuery{
-		FromBlock: from,
-		ToBlock:   to,
+		Addresses: []common.Address{contractAddress},
+	}
+
+
+	logs, err := listener.ethClient.FilterLogs(context.Background(), q)
+
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	contractAbi, err := abi.JSON(strings.NewReader(string(artifact.RootChainABI)))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+
+	for _, vLog := range logs {
+		depositEvent := chain.RootChainDeposit{}
+		exitStartedEvent := chain.RootChainExitStarted{}
+
+		err = contractAbi.Unpack(&depositEvent, "Deposit", vLog.Data)
+		if err != nil {
+			log.Fatal(err)
+			err = contractAbi.Unpack(&exitStartedEvent, "ExitStarted", vLog.Data)
+			if err != nil {
+				log.Fatal(err)
+			} else {
+				utxoId := exitStartedEvent.UtxoPos
+				listener.chain.MarkUTXOSpend(utxoId.Uint64())
+				b, e := json.Marshal(exitStartedEvent)
+				if e != nil {
+					fmt.Printf("Error: %s", err)
+					return
+				}
+				listener.handledEvent[string(b)] = exitStartedEvent
+			}
+		} else {
+			//add to depositor block to child block
+			owner := depositEvent.Depositor
+			amount := depositEvent.Amount
+			depositTx := core.MakeTransaction(owner, amount.Uint64())
+			txs := make([]*core.Transaction, 0)
+			txs = append(txs, depositTx)
+			fmt.Printf("deposit block %+v\n",depositEvent)
+			block := core.MakeBlock(txs, depositEvent.DepositBlock.Uint64())
+			listener.chain.AddBlock(&block)
+			b, e := json.Marshal(depositEvent)
+			if e != nil {
+				fmt.Printf("Error: %s", err)
+				return
+			}
+
+			listener.handledEvent[string(b)] = depositEvent
+		}
+	}
+}
+
+// It does't work, I don't know why
+func (listener *RootChainListener) eventListener(contract string) {
+
+	latestBlock := listener.GetLatestBlock()
+
+	fmt.Println("start event listener, latest block is ", latestBlock)
+
+	contractAddress := common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
+
+	fmt.Println("contract address is ", contract)
+
+	// 6 blocks ensure confirmation
+	//from := i.SetInt64(latestBlock - (Confirmations * 2 + 1))
+	//to := i.SetInt64(latestBlock + 1 - Confirmations)
+
+	q := ethereum.FilterQuery{
 		Addresses: []common.Address{contractAddress},
 	}
 
 	logs := make(chan types.Log)
 
 	sub, err := listener.ethClient.SubscribeFilterLogs(context.Background(), q, logs)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for {
+
+		fmt.Println("select...")
+
 		select {
 
+
 		case err := <-sub.Err():
+
+			fmt.Println("get error ", err)
 			log.Fatal(err)
 
 		case vLog := <-logs:
+
+			fmt.Println("get logs ")
 			contractAbi, err := abi.JSON(strings.NewReader(string(artifact.RootChainABI)))
 			if err != nil {
 				log.Fatal(err)
@@ -105,10 +188,10 @@ func (listener *RootChainListener) EventListener(contract string) {
 
 			depositEvent := chain.RootChainDeposit{}
 			exitStartedEvent := chain.RootChainExitStarted{}
-			err = contractAbi.Unpack(&depositEvent, "RootChainDeposit", vLog.Data)
+			err = contractAbi.Unpack(&depositEvent, "Deposit", vLog.Data)
 			if err != nil {
 				log.Fatal(err)
-				err = contractAbi.Unpack(&exitStartedEvent, "RootChainExitStarted", vLog.Data)
+				err = contractAbi.Unpack(&exitStartedEvent, "ExitStarted", vLog.Data)
 				if err != nil {
 					log.Fatal(err)
 				} else {
@@ -130,7 +213,7 @@ func (listener *RootChainListener) EventListener(contract string) {
 				txs = append(txs, depositTx)
 				block := core.MakeBlock(txs, depositEvent.DepositBlock.Uint64())
 				listener.chain.AddBlock(&block)
-				b,e := json.Marshal(depositEvent)
+				b, e := json.Marshal(depositEvent)
 				if e != nil {
 					fmt.Printf("Error: %s", err)
 					return
