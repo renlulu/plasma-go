@@ -32,6 +32,7 @@ type RootChainListener struct {
 	RootChain    chain.RootChain
 	chain        core.Chain
 	handledEvent map[string]interface{}
+	fromBlock 	 int64
 }
 
 func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
@@ -53,6 +54,7 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 		ethClient:    ethClient,
 		chain:        chain,
 		handledEvent: make(map[string]interface{}, 0),
+		fromBlock:0,
 	}
 }
 
@@ -88,11 +90,12 @@ func (listener *RootChainListener) EventListener(contract string) {
 
 	fmt.Println("contract address is ", contract)
 
-	q := ethereum.FilterQuery{
-		FromBlock: big.NewInt(latestBlock - 6),
-		Addresses: []common.Address{contractAddress},
-		ToBlock: big.NewInt(latestBlock),
 
+
+	q := ethereum.FilterQuery{
+		FromBlock: big.NewInt(listener.fromBlock),
+		Addresses: []common.Address{contractAddress},
+		ToBlock: big.NewInt(latestBlock - Confirmations),
 	}
 
 	fmt.Printf("query is %+v\n",q)
@@ -150,6 +153,8 @@ func (listener *RootChainListener) EventListener(contract string) {
 
 			listener.handledEvent[string(b)] = depositEvent
 		}
+
+		listener.fromBlock = listener.fromBlock + 1
 	}
 }
 
