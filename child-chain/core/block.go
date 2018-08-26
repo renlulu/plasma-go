@@ -11,3 +11,7 @@ func MakeBlock(txs []*Transaction, number uint64) Block {
 		Transactions:txs,Number:number,
 	}
 }
+
+func (block *Block) Merkle() [32]byte {
+	//TODO
+}

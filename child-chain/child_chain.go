@@ -21,7 +21,8 @@ func MakeChildChain(rootChain *chain.RootChain, operator string) ChildChain {
 
 func (chain *ChildChain) SubmitBlock(block core.Block) {
 	chain.Chain.AddBlock(&block)
-	//TODO 对接公链
+	//TODO opts
+	chain.RootChain.RootChainTransactor.SubmitBlock(nil,block.Merkle())
 	chain.CurrentBlock = &core.Block{Number:chain.Chain.NextChildBlock}
 }
 

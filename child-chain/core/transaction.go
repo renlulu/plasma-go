@@ -50,3 +50,7 @@ func MakeUTXO(blkNum uint64, txIndex uint64, oIndex uint64,sig []byte, spend boo
 	}
 	return utxo
 }
+
+func (tx *Transaction) MerkleHash() {
+
+}
