@@ -20,6 +20,10 @@ get current deposit block from root chain
 
 ### TODO
 
+- [x] Define child block and transaction
+- [x] Deposit by using metamask, sync to child chain
+- [ ] Http server
+- [ ] Cli tools
 - [ ] Implement merkle data structure
 - [ ] Complete the logic for submitting the plasma block
 
