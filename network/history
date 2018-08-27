@@ -1,0 +1,24 @@
+eth.accounts
+miner.start()
+miner.stop()
+eth.accounts
+miner.start()
+miner.stop()
+eth.accounts
+eth.getBlance("0x70043fa2d7b7125b8f6351b4b6b96c748f8a8336")
+eth.getBalance("0x70043fa2d7b7125b8f6351b4b6b96c748f8a8336")
+miner.start()
+miner.stop()
+miner.start()
+miner.stop()
+eth.contract
+contractAddress = "0x4cd7519f5c19e114a949eb0caa4c718289571519"
+abi =  [
+abi =   [
+abi =  [
+abi = [
+miner.start()
+miner.stop()
+eth.accounts
+miner.start()
+miner.stop()

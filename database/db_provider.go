@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/syndtr/goleveldb/leveldb"
-	"github.com/renlulu/plasma-go/child-chain/core"
+	"github.com/renlulu/plasma-go/child/core"
 	"fmt"
 )
 

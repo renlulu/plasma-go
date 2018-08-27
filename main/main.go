@@ -1,18 +1,18 @@
 package main
 
 import (
-	"github.com/renlulu/plasma-go/child-chain"
+	"github.com/renlulu/plasma-go/child"
 	"net/http"
 	"log"
 	"fmt"
 	"flag"
 	"github.com/renlulu/plasma-go/cli"
-	"github.com/renlulu/plasma-go/root-chain/artifact"
+	"github.com/renlulu/plasma-go/root/artifact"
 	"github.com/ethereum/go-ethereum/common"
 )
 
 
-var childChain child_chain.ChildChain
+var childChain child.ChildChain
 var rootChain *chain.RootChain
 var RootAddress= common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
 
@@ -41,11 +41,11 @@ func getDepositBlockC() {
 }
 
 func httpServer() {
-	http.HandleFunc("/get_current_block", child_chain.GetCurrentBlockHandler)
-	http.HandleFunc("/submit_block", child_chain.SubmitBlockHandler)
-	http.HandleFunc("/block_number", child_chain.GetBlockNumberHandler)
-	http.HandleFunc("/get_block", child_chain.GetBlock)
-	http.HandleFunc("/get_child_chain", child_chain.GetChildChainHander)
+	http.HandleFunc("/get_current_block", child.GetCurrentBlockHandler)
+	http.HandleFunc("/submit_block", child.SubmitBlockHandler)
+	http.HandleFunc("/block_number", child.GetBlockNumberHandler)
+	http.HandleFunc("/get_block", child.GetBlock)
+	http.HandleFunc("/get_child_chain", child.GetChildChainHander)
 
 	fmt.Printf("start http server on %s\n", "8080")
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", "8080"), nil))

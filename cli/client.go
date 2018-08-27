@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/renlulu/plasma-go/root-chain/artifact"
+	"github.com/renlulu/plasma-go/root/artifact"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"context"
 	"github.com/ethereum/go-ethereum/common"
