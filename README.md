@@ -18,6 +18,11 @@ get current deposit block from root chain
 ./main -run get_deposit_block
 ```
 
+### TODO
+
+- [ ] Implement merkle data structure
+- [ ] Complete the logic for submitting the plasma block
+
 ###  Related items
 
 - https://ethresear.ch/t/minimal-viable-plasma/426
