@@ -40,7 +40,7 @@ get current deposit block from root chain
 - remix
 - abigen
 
-### Create your own private ethereum test network
+### Instructions 1 : Create your own private ethereum test network
 
 #### setup genesis.json
 
@@ -89,7 +89,7 @@ personal.newAccount("password")
 geth --identity "TestNode" --rpc --rpcport "8545" --datadir private-network --port "30303"  --rpccorsdomain "*" --rpcaddr "0.0.0.0" --networkid 10  --ws --wsport 8546 console
 ```
 
-### Deploy root contract with truffle
+### Instructions 2 : Deploy root contract with truffle
 
 #### compile
 
@@ -115,7 +115,7 @@ truffle migrate --reset
 miner.start()
 ```
 
-### Use abigen generate go file
+### Instructions 3 : Use abigen generate go file
 
 #### install abigen
 
