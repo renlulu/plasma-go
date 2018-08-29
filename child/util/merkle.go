@@ -5,9 +5,6 @@ import (
 	"math"
 )
 
-
-
-
 type Merkle struct {
 	Depth  int
 	Root   string
@@ -37,7 +34,7 @@ func MakeMerkle(depth int,leaves []string) (Merkle, error) {
 func makeNullHash(count uint64) []string {
 	var h []string
 	for i:=uint64(0);i<count;i++ {
-		var b [32]byte
+		var b = []byte{'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',}
 		h = append(h,string(b[:]))
 	}
 	return h
@@ -56,11 +53,12 @@ func (m *Merkle) createNodes() []Node {
 func (m *Merkle) createTree(leaves []Node) {
 	if len(leaves) == 1 {
 		m.Root = leaves[0].Data
+		return
 	}
 
 	nextLevel := len(leaves)
 	var treeLevel []Node
-	for i := 0; i < nextLevel; i = i + 2 {
+	for i := 0; i < nextLevel-1; i = i + 2 {
 		hash := Sha3(leaves[i].Data + leaves[i+1].Data)
 		parentNode := MakeNode(string(hash[:]), leaves[i], leaves[i+1])
 		treeLevel = append(treeLevel, parentNode)
