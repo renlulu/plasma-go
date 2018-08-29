@@ -13,3 +13,4 @@ func MakeNode(data string, left Node, right Node) Node {
 		Right:right,
 	}
 }
+
