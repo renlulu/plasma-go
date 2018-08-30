@@ -1,20 +1,20 @@
 package cli
 
 import (
-	"github.com/renlulu/plasma-go/root/artifact"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"context"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/renlulu/plasma-go/root/artifact"
 )
 
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54")
+var RootAddress = common.HexToAddress("0x6688b124492d9c924cf849e57f8228111a3f1e54")
 var connecter *Connecter
 
 type Connecter struct {
-	ctx  context.Context
-	conn *ethclient.Client
+	ctx       context.Context
+	conn      *ethclient.Client
 	rootchain *chain.RootChain
 }
 
@@ -23,25 +23,25 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	rootChain,err = chain.NewRootChain(RootAddress,conn)
+	rootChain, err = chain.NewRootChain(RootAddress, conn)
 	if err != nil {
 		panic(err)
 	}
 
 	connecter = &Connecter{
-		ctx: context.Background(),
-		conn: conn,
-		rootchain:rootChain,
+		ctx:       context.Background(),
+		conn:      conn,
+		rootchain: rootChain,
 	}
 }
 
 func GetDepositBlock() uint64 {
 	opts := &bind.CallOpts{
-		Pending:false,
-		From: RootAddress,
+		Pending: false,
+		From:    RootAddress,
 		Context: connecter.ctx,
 	}
-	block,err := connecter.rootchain.GetDepositBlock(opts)
+	block, err := connecter.rootchain.GetDepositBlock(opts)
 	if err != nil {
 		panic(err)
 	}

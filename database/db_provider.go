@@ -1,9 +1,9 @@
 package database
 
 import (
-	"github.com/syndtr/goleveldb/leveldb"
-	"github.com/renlulu/plasma-go/child/core"
 	"fmt"
+	"github.com/renlulu/plasma-go/child/core"
+	"github.com/syndtr/goleveldb/leveldb"
 )
 
 type Provider struct {

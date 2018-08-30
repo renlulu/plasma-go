@@ -1,6 +1,6 @@
 package util
 
-const HashSize  = 32
+const HashSize = 32
 
 type Hash [HashSize]byte
 

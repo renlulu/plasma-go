@@ -6,15 +6,15 @@ import (
 )
 
 type ChildChain struct {
-	RootChain *chain.RootChain
-	Chain *core.Chain
+	RootChain    *chain.RootChain
+	Chain        *core.Chain
 	CurrentBlock *core.Block
-	operator string
+	operator     string
 }
 
 func MakeChildChain(rootChain *chain.RootChain, operator string) ChildChain {
 	childChain := ChildChain{
-		rootChain,core.MakeChain(),&core.Block{Number:0}, operator,
+		rootChain, core.MakeChain(), &core.Block{Number: 0}, operator,
 	}
 	return childChain
 }
@@ -22,10 +22,9 @@ func MakeChildChain(rootChain *chain.RootChain, operator string) ChildChain {
 func (chain *ChildChain) SubmitBlock(block core.Block) {
 	chain.Chain.AddBlock(&block)
 	//TODO opts
-	chain.RootChain.RootChainTransactor.SubmitBlock(nil,block.Merkle())
-	chain.CurrentBlock = &core.Block{Number:chain.Chain.NextChildBlock}
+	chain.RootChain.RootChainTransactor.SubmitBlock(nil, block.Merkle())
+	chain.CurrentBlock = &core.Block{Number: chain.Chain.NextChildBlock}
 }
-
 
 func (chain *ChildChain) GetBlock(blkNum uint64) *core.Block {
 	return chain.Chain.GetBlock(blkNum)
@@ -42,4 +41,3 @@ func (chain *ChildChain) GetTransaction(utxoId uint64) *core.Transaction {
 func (chain *ChildChain) GetBlockNum() uint64 {
 	return chain.Chain.GetBlockNum()
 }
-

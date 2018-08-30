@@ -1,15 +1,14 @@
 package util
 
 import (
-	"fmt"
 	"bytes"
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
 var contentType = "application/json;charset=utf-8"
-
 
 type Block struct {
 	Number           string        `json:"number"`
@@ -46,7 +45,6 @@ type Transaction struct {
 	Input            string `json:"input"`
 }
 
-
 type BlockRequest struct {
 	JsonRpc string        `json:"jsonrpc"`
 	Method  string        `json:"method"`
@@ -55,9 +53,9 @@ type BlockRequest struct {
 }
 
 type BlockNumberResponse struct {
-	JsonRpc string        `json:"jsonrpc"`
-	Id      byte          `json:"id"`
-	Result  string 		  `json:"result"`
+	JsonRpc string `json:"jsonrpc"`
+	Id      byte   `json:"id"`
+	Result  string `json:"result"`
 }
 
 func GetLatestBlock(url string) BlockNumberResponse {
@@ -66,7 +64,7 @@ func GetLatestBlock(url string) BlockNumberResponse {
 	request := BlockRequest{JsonRpc: "2.0", Method: "eth_blockNumber", Params: p, Id: 1}
 	data, err := json.Marshal(request)
 
-	fmt.Printf("request is %s\n",request)
+	fmt.Printf("request is %s\n", request)
 
 	if err != nil {
 		fmt.Println("json format error:", err)
@@ -89,11 +87,11 @@ func GetLatestBlock(url string) BlockNumberResponse {
 		return block
 	}
 
-	fmt.Println("result is ",string(content))
+	fmt.Println("result is ", string(content))
 
 	json.Unmarshal(content, &block)
 
-	fmt.Println("block number is ",block.Result)
+	fmt.Println("block number is ", block.Result)
 
 	return block
 }

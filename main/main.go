@@ -1,21 +1,19 @@
 package main
 
 import (
-	"github.com/renlulu/plasma-go/child"
-	"net/http"
-	"log"
-	"fmt"
 	"flag"
+	"fmt"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/renlulu/plasma-go/child"
 	"github.com/renlulu/plasma-go/cli"
 	"github.com/renlulu/plasma-go/root/artifact"
-	"github.com/ethereum/go-ethereum/common"
+	"log"
+	"net/http"
 )
-
 
 var childChain child.ChildChain
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
-
+var RootAddress = common.HexToAddress("0x44da3d92af236ffb5069781fa202c2d0e740d6a3")
 
 func main() {
 	var startServer bool
@@ -28,7 +26,6 @@ func main() {
 		httpServer()
 	}
 
-
 	switch command {
 	case "get_deposit_block":
 		getDepositBlockC()
@@ -37,7 +34,7 @@ func main() {
 }
 
 func getDepositBlockC() {
-	 fmt.Println(cli.GetDepositBlock())
+	fmt.Println(cli.GetDepositBlock())
 }
 
 func httpServer() {

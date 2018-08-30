@@ -12,30 +12,30 @@ type Merkle struct {
 	Tree   []Node
 }
 
-func MakeMerkle(depth int,leaves []string) (Merkle, error) {
+func MakeMerkle(depth int, leaves []string) (Merkle, error) {
 	if depth < 1 {
 		return Merkle{}, errors.New("depth should be at least 1")
 	}
 
-	leafCount := uint64(math.Pow(float64(depth),2))
+	leafCount := uint64(math.Pow(float64(depth), 2))
 	nullLeaves := makeNullHash(leafCount - uint64(len(leaves)))
-	leaves = append(leaves,nullLeaves...)
+	leaves = append(leaves, nullLeaves...)
 
 	m := Merkle{
-		Depth:depth,
-		Leaves:leaves,
+		Depth:  depth,
+		Leaves: leaves,
 	}
 	nodes := m.createNodes()
 	m.createTree(nodes)
 
-	return m,nil
+	return m, nil
 }
 
 func makeNullHash(count uint64) []string {
 	var h []string
-	for i:=uint64(0);i<count;i++ {
-		var b = []byte{'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0',}
-		h = append(h,string(b[:]))
+	for i := uint64(0); i < count; i++ {
+		var b = []byte{'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}
+		h = append(h, string(b[:]))
 	}
 	return h
 }
@@ -44,7 +44,7 @@ func (m *Merkle) createNodes() []Node {
 	var n []Node
 
 	for _, l := range m.Leaves {
-		n = append(n,MakeNode(l,Node{},Node{}))
+		n = append(n, MakeNode(l, Node{}, Node{}))
 	}
 
 	return n

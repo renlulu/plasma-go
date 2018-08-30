@@ -1,40 +1,37 @@
 package child
 
 import (
-	"net/http"
 	"encoding/json"
-	"github.com/renlulu/plasma-go/child/core"
-	"io/ioutil"
-	"io"
 	"fmt"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/renlulu/plasma-go/child/core"
+	"io"
+	"io/ioutil"
+	"net/http"
 
-	"github.com/renlulu/plasma-go/root/artifact"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/renlulu/plasma-go/root/artifact"
 )
-
 
 var childChain ChildChain
 var rootChain *chain.RootChain
-var RootAddress= common.HexToAddress("0xa80caedc9ffa91f09e7f9f76ec96660edf8e34ef")
-
-
+var RootAddress = common.HexToAddress("0xa80caedc9ffa91f09e7f9f76ec96660edf8e34ef")
 
 func init() {
 
 	fmt.Printf("Init child chain...\n")
-	childChain = MakeChildChain(nil,"")
+	childChain = MakeChildChain(nil, "")
 	conn, err := ethclient.Dial("ws://127.0.0.1:8546")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Init root chain...\n")
-	rootChain,err = chain.NewRootChain(RootAddress,conn)
+	rootChain, err = chain.NewRootChain(RootAddress, conn)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Start to listen events from root chain...\n")
-	listener := MakeRootChainListener("http://127.0.0.1:8545",*rootChain,"ws://127.0.0.1:8546",*childChain.Chain)
+	listener := MakeRootChainListener("http://127.0.0.1:8545", *rootChain, "ws://127.0.0.1:8546", *childChain.Chain)
 	go listener.EventLoop("0xa80caedc9ffa91f09e7f9f76ec96660edf8e34ef")
 
 }
@@ -104,7 +101,7 @@ func SubmitBlockHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	fmt.Printf("get new block %v, submit it\n",block)
+	fmt.Printf("get new block %v, submit it\n", block)
 
 	childChain.SubmitBlock(block)
 

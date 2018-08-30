@@ -1,24 +1,24 @@
 package child
 
 import (
-	"github.com/ethereum/go-ethereum/rpc"
-	"log"
-	"fmt"
-	"github.com/renlulu/plasma-go/root/artifact"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"strings"
-	artifact "github.com/renlulu/plasma-go/root/artifact"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/renlulu/plasma-go/child/core"
 	"github.com/renlulu/plasma-go/child/util"
-	"strconv"
-	"encoding/json"
-	"github.com/ethereum/go-ethereum/core/types"
-	"time"
+	"github.com/renlulu/plasma-go/root/artifact"
+	artifact "github.com/renlulu/plasma-go/root/artifact"
+	"log"
 	"math/big"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const (
@@ -32,7 +32,7 @@ type RootChainListener struct {
 	RootChain    chain.RootChain
 	chain        core.Chain
 	handledEvent map[string]interface{}
-	fromBlock 	 int64
+	fromBlock    int64
 }
 
 func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string, chain core.Chain) RootChainListener {
@@ -54,7 +54,7 @@ func MakeRootChainListener(url string, rootChain chain.RootChain, ethUrl string,
 		ethClient:    ethClient,
 		chain:        chain,
 		handledEvent: make(map[string]interface{}, 0),
-		fromBlock:0,
+		fromBlock:    0,
 	}
 }
 
@@ -90,19 +90,15 @@ func (listener *RootChainListener) EventListener(contract string) {
 
 	fmt.Println("contract address is ", contract)
 
-
-
 	q := ethereum.FilterQuery{
 		FromBlock: big.NewInt(listener.fromBlock),
 		Addresses: []common.Address{contractAddress},
-		ToBlock: big.NewInt(latestBlock - Confirmations),
+		ToBlock:   big.NewInt(latestBlock - Confirmations),
 	}
 
-	fmt.Printf("query is %+v\n",q)
-
+	fmt.Printf("query is %+v\n", q)
 
 	logs, err := listener.ethClient.FilterLogs(context.Background(), q)
-
 
 	if err != nil {
 		log.Fatal(err)
@@ -113,7 +109,6 @@ func (listener *RootChainListener) EventListener(contract string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 
 	for _, vLog := range logs {
 		depositEvent := chain.RootChainDeposit{}
@@ -137,7 +132,7 @@ func (listener *RootChainListener) EventListener(contract string) {
 			}
 		} else {
 			//add to depositor block to child block
-			fmt.Printf("deposit block %+v\n",depositEvent)
+			fmt.Printf("deposit block %+v\n", depositEvent)
 			owner := depositEvent.Depositor
 			amount := depositEvent.Amount
 			depositTx := core.MakeTransaction(owner, amount.Uint64())
@@ -190,7 +185,6 @@ func (listener *RootChainListener) eventListener(contract string) {
 		fmt.Println("select...")
 
 		select {
-
 
 		case err := <-sub.Err():
 
