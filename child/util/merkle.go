@@ -3,6 +3,7 @@ package util
 import (
 	"errors"
 	"math"
+	"github.com/go-ethereum/common/hexutil"
 )
 
 type Merkle struct {
@@ -34,8 +35,8 @@ func MakeMerkle(depth int, leaves []string) (Merkle, error) {
 func makeNullHash(count uint64) []string {
 	var h []string
 	for i := uint64(0); i < count; i++ {
-		var b = []byte{'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}
-		h = append(h, string(b[:]))
+		var b = []byte{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+		h = append(h, hexutil.Encode(b[:]))
 	}
 	return h
 }
@@ -60,7 +61,7 @@ func (m *Merkle) createTree(leaves []Node) {
 	var treeLevel []Node
 	for i := 0; i < nextLevel-1; i = i + 2 {
 		hash := Sha3(leaves[i].Data + leaves[i+1].Data)
-		parentNode := MakeNode(string(hash[:]), leaves[i], leaves[i+1])
+		parentNode := MakeNode(hexutil.Encode(hash[:]), leaves[i], leaves[i+1])
 		treeLevel = append(treeLevel, parentNode)
 	}
 
